@@ -1,1 +1,1149 @@
 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JERC生存服务器 - 官方网站</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6', // 主蓝色
+                        secondary: '#10B981', // 绿色（用于状态和按钮）
+                        accent: '#F59E0B', // 橙色（用于强调和通知）
+                        dark: '#1F2937', // 深色背景
+                        light: '#F3F4F6', // 浅色背景
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            .bg-glass {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563EB;
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            border-top-color: #3B82F6;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        
+        @-webkit-keyframes spinner {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 方块样式 */
+        .mc-block {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+        
+        .mc-block:hover {
+            transform: rotateY(180deg);
+        }
+        
+        .mc-block .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.9;
+        }
+        
+        .mc-block .top {
+            background-color: #94A3B8;
+            transform: rotateX(90deg) translateZ(30px);
+        }
+        
+        .mc-block .front {
+            background-color: #64748B;
+            transform: translateZ(30px);
+        }
+        
+        .mc-block .side {
+            background-color: #94A3B8;
+            transform: rotateY(90deg) translateZ(30px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                    <i class="fa fa-cube text-white text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JERC生存服务器</span>
+            </div>
+            
+            <!-- 桌面导航 -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-700 hover:text-primary transition-all-300 font-medium">首页</a>
+                <a href="#features" class="text-gray-700 hover:text-primary transition-all-300">游戏特色</a>
+                <a href="#status" class="text-gray-700 hover:text-primary transition-all-300">服务器状态</a>
+                <a href="#community" class="text-gray-700 hover:text-primary transition-all-300">玩家社区</a>
+                <a href="#rules" class="text-gray-700 hover:text-primary transition-all-300">服务器规则</a>
+                <a href="forum.html" class="text-gray-700 hover:text-primary transition-all-300">社区论坛</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-700 hover:text-primary focus:outline-none">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="md:hidden bg-white shadow-lg absolute w-full left-0 top-full transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="#" class="text-gray-700 hover:text-primary transition-all-300 py-2 border-b border-gray-100">首页</a>
+                <a href="#features" class="text-gray-700 hover:text-primary transition-all-300 py-2 border-b border-gray-100">游戏特色</a>
+                <a href="#status" class="text-gray-700 hover:text-primary transition-all-300 py-2 border-b border-gray-100">服务器状态</a>
+                <a href="#community" class="text-gray-700 hover:text-primary transition-all-300 py-2 border-b border-gray-100">玩家社区</a>
+                <a href="#rules" class="text-gray-700 hover:text-primary transition-all-300 py-2 border-b border-gray-100">服务器规则</a>
+                <a href="forum.html" class="text-gray-700 hover:text-primary transition-all-300 py-2">社区论坛</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-blue-50 to-blue-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+                        欢迎来到<span class="text-primary">JERC生存服务器</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8">
+                        加入我们的Minecraft生存冒险，与全球玩家一起探索、建造、生存！
+                        体验原汁原味的生存乐趣，还有独特的特色玩法等你来发现。
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fa fa-server text-green-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">服务器地址</p>
+                                <p class="text-lg font-medium">9666.fun:13757</p>
+                            </div>
+                        </div>
+                        <button class="bg-primary hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 flex items-center justify-center">
+                            <i class="fa fa-play-circle mr-2"></i> 立即加入
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute -top-4 -left-4 w-24 h-24 bg-blue-200 rounded-lg transform rotate-12 animate-float"></div>
+                        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-green-200 rounded-lg transform -rotate-6 animate-float" style="animation-delay: 0.5s"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-yellow-200 rounded-full opacity-20"></div>
+                        
+                        <div class="relative bg-white p-6 rounded-xl shadow-xl z-10">
+                            <div class="flex flex-wrap justify-center gap-4">
+                                <div class="mc-block">
+                                    <div class="face top"></div>
+                                    <div class="face front"></div>
+                                    <div class="face side"></div>
+                                </div>
+                                <div class="mc-block">
+                                    <div class="face top bg-green-300"></div>
+                                    <div class="face front bg-green-500"></div>
+                                    <div class="face side bg-green-400"></div>
+                                </div>
+                                <div class="mc-block">
+                                    <div class="face top bg-yellow-300"></div>
+                                    <div class="face front bg-yellow-500"></div>
+                                    <div class="face side bg-yellow-400"></div>
+                                </div>
+                                <div class="mc-block">
+                                    <div class="face top bg-red-300"></div>
+                                    <div class="face front bg-red-500"></div>
+                                    <div class="face side bg-red-400"></div>
+                                </div>
+                                <div class="mc-block">
+                                    <div class="face top bg-blue-300"></div>
+                                    <div class="face front bg-blue-500"></div>
+                                    <div class="face side bg-blue-400"></div>
+                                </div>
+                                <div class="mc-block">
+                                    <div class="face top bg-purple-300"></div>
+                                    <div class="face front bg-purple-500"></div>
+                                    <div class="face side bg-purple-400"></div>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-center">
+                                <div class="inline-block bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+                                    <i class="fa fa-check-circle mr-1"></i> 服务器在线
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 服务器状态概览 -->
+    <section id="status" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">服务器状态</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">实时监控服务器运行状态，包括在线人数、版本信息和服务器性能指标</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 服务器信息卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-info-circle text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">服务器信息</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">服务器版本</span>
+                            <span class="font-medium">1.20.1</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">服务器类型</span>
+                            <span class="font-medium">生存模式</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">服务器地址</span>
+                            <span class="font-medium">9666.fun:13757</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">服务器软件</span>
+                            <span class="font-medium">PaperMC</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 在线人数卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-users text-secondary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">在线人数</h3>
+                    </div>
+                    <div class="flex justify-center my-6">
+                        <div class="text-6xl font-bold text-primary" id="player-count">24</div>
+                        <div class="text-gray-400 ml-2 flex flex-col justify-end pb-1">
+                            <span class="text-lg">/</span>
+                            <span class="text-sm">100</span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm text-gray-500 mb-1">
+                            <span>当前玩家</span>
+                            <span>24/100</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-secondary h-2.5 rounded-full" style="width: 24%"></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <a href="#community" class="text-primary hover:text-blue-700 font-medium flex items-center justify-center">
+                            查看在线玩家 <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 服务器性能卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-tachometer text-yellow-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">服务器性能</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>CPU 使用率</span>
+                                <span id="cpu-usage">32%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-yellow-500 h-2.5 rounded-full" id="cpu-bar" style="width: 32%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>内存使用率</span>
+                                <span id="ram-usage">45%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-500 h-2.5 rounded-full" id="ram-bar" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-500 mb-1">
+                                <span>TPS (15分钟)</span>
+                                <span id="tps-value" class="text-green-500">19.8</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-green-500 h-2.5 rounded-full" id="tps-bar" style="width: 99%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 玩家活跃度图表 -->
+            <div class="mt-12 bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                <h3 class="text-xl font-semibold mb-6">玩家活跃度统计</h3>
+                <div class="h-64">
+                    <canvas id="playerActivityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏特色 -->
+    <section id="features" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">游戏特色</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">JERC生存服务器提供丰富多样的特色玩法，让你的Minecraft体验更加精彩</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 特色1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-leaf text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">原汁原味生存</h3>
+                    <p class="text-gray-600">体验最纯粹的Minecraft生存模式，从无到有，收集资源，建造家园，挑战末影龙和凋灵。</p>
+                </div>
+                
+                <!-- 特色2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-diamond text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">经济系统</h3>
+                    <p class="text-gray-600">独特的服务器经济系统，玩家可以通过交易、挖矿、 farming 等方式获取游戏货币，购买稀有物品。</p>
+                </div>
+                
+                <!-- 特色3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-map-signs text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">自定义任务</h3>
+                    <p class="text-gray-600">丰富多样的自定义任务系统，完成任务获取奖励，解锁特殊权限和物品，增加游戏乐趣。</p>
+                </div>
+                
+                <!-- 特色4 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-shield text-red-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">领地保护</h3>
+                    <p class="text-gray-600">强大的领地保护系统，玩家可以购买和保护自己的领地，防止他人破坏，安全建造家园。</p>
+                </div>
+                
+                <!-- 特色5 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-trophy text-yellow-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">成就系统</h3>
+                    <p class="text-gray-600">丰富的成就系统，完成各种挑战解锁成就，展示你的游戏实力和探索精神。</p>
+                </div>
+                
+                <!-- 特色6 -->
+                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all-300 border border-gray-100">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-users text-indigo-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">社区活动</h3>
+                    <p class="text-gray-600">定期举办各种社区活动，如建筑比赛、PVP比赛、寻宝活动等，增进玩家互动。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 玩家社区 -->
+    <section id="community" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">玩家社区</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">加入我们活跃的玩家社区，结交新朋友，一起探索Minecraft的奇妙世界</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 在线玩家 -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold">在线玩家</h3>
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fa fa-circle text-xs mr-1"></i> 24 位玩家在线
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="online-players">
+                            <!-- 玩家列表将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 社区统计 -->
+                <div>
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                        <h3 class="text-xl font-semibold mb-6">社区统计</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">总注册玩家</span>
+                                    <span class="font-medium text-lg">1,248</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">今日新增玩家</span>
+                                    <span class="font-medium text-lg">12</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">总发帖数</span>
+                                    <span class="font-medium text-lg">3,567</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">服务器运行时间</span>
+                                    <span class="font-medium text-lg">186 天</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <a href="forum.html" class="block w-full bg-primary hover:bg-blue-600 text-white text-center font-medium py-3 px-6 rounded-lg transition-all-300">
+                                访问社区论坛
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 玩家成就展示 -->
+            <div class="mt-12">
+                <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold mb-6">最新玩家成就</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="player-achievements">
+                        <!-- 成就将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务器规则 -->
+    <section id="rules" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">服务器规则</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">为了维护良好的游戏环境，请所有玩家遵守以下规则</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 border border-gray-100">
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                            <i class="fa fa-times-circle text-red-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">禁止作弊</h4>
+                            <p class="text-gray-600">严禁使用任何形式的作弊客户端、外挂、脚本或利用漏洞进行游戏，一经发现将永久封禁。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                            <i class="fa fa-times-circle text-red-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">禁止 griefing</h4>
+                            <p class="text-gray-600">禁止破坏或偷窃其他玩家的财产，包括但不限于建筑、物品、农作物等。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                            <i class="fa fa-times-circle text-red-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">禁止辱骂和骚扰</h4>
+                            <p class="text-gray-600">尊重其他玩家，禁止使用任何形式的辱骂、歧视、骚扰或不当言论。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                            <i class="fa fa-exclamation-circle text-yellow-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">合理使用资源</h4>
+                            <p class="text-gray-600">请合理使用服务器资源，不要过度建造或制造可能导致服务器卡顿的结构。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                            <i class="fa fa-exclamation-circle text-yellow-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">禁止广告</h4>
+                            <p class="text-gray-600">禁止在服务器内宣传其他服务器、网站或服务，除非得到管理员的明确许可。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                            <i class="fa fa-check-circle text-green-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">鼓励合作</h4>
+                            <p class="text-gray-600">鼓励玩家之间的合作与互助，共同建设美好的游戏世界。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                    <p class="text-blue-700 text-center">
+                        违反服务器规则可能导致警告、临时封禁或永久封禁，具体视情节严重程度而定。
+                        如有任何疑问，请联系服务器管理员。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI智能助手 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">AI智能助手</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">有任何问题？我们的AI助手随时为你解答</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="bg-primary text-white p-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
+                            <i class="fa fa-robot text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">JERC智能助手</h3>
+                    </div>
+                </div>
+                
+                <div class="p-6" id="chat-container">
+                    <div class="space-y-4 h-80 overflow-y-auto mb-6" id="chat-messages">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white mr-2 flex-shrink-0">
+                                <i class="fa fa-robot text-sm"></i>
+                            </div>
+                            <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                                <p>你好！我是JERC服务器的AI助手，有什么可以帮助你的吗？</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex">
+                        <input type="text" id="chat-input" class="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="输入你的问题...">
+                        <button id="send-button" class="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded-r-lg transition-all-300">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all-300">如何加入服务器？</button>
+                        <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all-300">服务器有哪些特色？</button>
+                        <button class="quick-question bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all-300">有什么规则需要遵守？</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 加入服务器 -->
+    <section class="py-16 bg-gradient-to-br from-blue-500 to-blue-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">准备好加入我们的冒险了吗？</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">复制服务器地址，开启你的Minecraft生存之旅</p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12">
+                <div class="bg-white text-gray-800 p-4 rounded-lg shadow-lg flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                        <i class="fa fa-server text-green-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">服务器地址</p>
+                        <p class="text-lg font-medium">9666.fun:13757</p>
+                    </div>
+                </div>
+                
+                <button id="copy-ip" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-6 rounded-lg transition-all-300 flex items-center justify-center">
+                    <i class="fa fa-copy mr-2"></i> 复制地址
+                </button>
+            </div>
+            
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all-300 inline-flex items-center">
+                    <i class="fa fa-youtube-play mr-2"></i> 观看教程
+                </a>
+                <a href="forum.html" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-medium py-3 px-8 rounded-lg transition-all-300 inline-flex items-center">
+                    <i class="fa fa-comments mr-2"></i> 加入社区
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fa fa-cube text-white text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold">JERC生存服务器</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">
+                        打造最好的Minecraft生存体验，让每一位玩家都能享受游戏的乐趣。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-youtube-play text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-discord text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">首页</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition-all-300">游戏特色</a></li>
+                        <li><a href="#status" class="text-gray-400 hover:text-white transition-all-300">服务器状态</a></li>
+                        <li><a href="#community" class="text-gray-400 hover:text-white transition-all-300">玩家社区</a></li>
+                        <li><a href="#rules" class="text-gray-400 hover:text-white transition-all-300">服务器规则</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">社区</h4>
+                    <ul class="space-y-3">
+                        <li><a href="forum.html" class="text-gray-400 hover:text-white transition-all-300">社区论坛</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">Discord</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">YouTube频道</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">服务器地图</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">玩家商店</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">联系我们</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope text-gray-400 mr-3"></i>
+                            <a href="mailto:admin@jerc-server.com" class="text-gray-400 hover:text-white transition-all-300">admin@jerc-server.com</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-map-marker text-gray-400 mr-3"></i>
+                            <span class="text-gray-400">北京市朝阳区</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-clock-o text-gray-400 mr-3"></i>
+                            <span class="text-gray-400">24/7 在线</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 JERC生存服务器. 保留所有权利.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-all-300">隐私政策</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-all-300">服务条款</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-all-300">帮助中心</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary hover:bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all-300 opacity-0 invisible">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('back-to-top');
+            
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-3');
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                navbar.classList.add('py-3');
+                navbar.classList.remove('py-2');
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenu.classList.contains('-translate-y-full')) {
+                mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            } else {
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            }
+        });
+        
+        // 返回顶部按钮
+        document.getElementById('back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 复制IP地址
+        document.getElementById('copy-ip').addEventListener('click', function() {
+            const ip = '9666.fun:13757';
+            navigator.clipboard.writeText(ip).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fa fa-check mr-2"></i> 已复制';
+                this.classList.add('bg-green-500');
+                this.classList.remove('bg-white', 'text-primary', 'hover:bg-gray-100');
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.classList.remove('bg-green-500');
+                    this.classList.add('bg-white', 'text-primary', 'hover:bg-gray-100');
+                }, 2000);
+            });
+        });
+        
+        // 模拟服务器状态数据
+        function updateServerStatus() {
+            // 随机波动在线人数
+            const playerCount = Math.floor(Math.random() * 10) + 20;
+            document.getElementById('player-count').textContent = playerCount;
+            
+            // 更新进度条
+            const playerBar = document.querySelector('#status .bg-secondary.h-2.5');
+            playerBar.style.width = `${playerCount}%`;
+            
+            // 随机波动CPU使用率
+            const cpuUsage = Math.floor(Math.random() * 20) + 25;
+            document.getElementById('cpu-usage').textContent = `${cpuUsage}%`;
+            document.getElementById('cpu-bar').style.width = `${cpuUsage}%`;
+            
+            // 随机波动内存使用率
+            const ramUsage = Math.floor(Math.random() * 15) + 40;
+            document.getElementById('ram-usage').textContent = `${ramUsage}%`;
+            document.getElementById('ram-bar').style.width = `${ramUsage}%`;
+            
+            // 随机波动TPS
+            const tps = (Math.random() * 0.5 + 19.5).toFixed(1);
+            document.getElementById('tps-value').textContent = tps;
+            document.getElementById('tps-bar').style.width = `${(tps / 20) * 100}%`;
+            
+            // 根据TPS值改变颜色
+            const tpsValue = document.getElementById('tps-value');
+            if (parseFloat(tps) >= 19.5) {
+                tpsValue.className = 'text-green-500';
+            } else if (parseFloat(tps) >= 18.0) {
+                tpsValue.className = 'text-yellow-500';
+            } else {
+                tpsValue.className = 'text-red-500';
+            }
+        }
+        
+        // 初始化服务器状态
+        updateServerStatus();
+        
+        // 每5秒更新一次服务器状态
+        setInterval(updateServerStatus, 5000);
+        
+        // 生成在线玩家列表
+        function generateOnlinePlayers() {
+            const playersContainer = document.getElementById('online-players');
+            playersContainer.innerHTML = '';
+            
+            const playerNames = [
+                'Steve', 'Alex', 'Herobrine', 'Notch', 'Jeb', 'Dinnerbone',
+                'Carpenter', 'MinerPro', 'BuilderKing', 'RedstoneWizard',
+                'FarmerJoe', 'ExplorerX', 'CrafterMaster', 'PvPChampion',
+                'Fisherman', 'Enchanter', 'Alchemist', 'Architect',
+                'Forester', 'Blacksmith', 'Hunter', 'Trader', 'Baker', 'Miner'
+            ];
+            
+            playerNames.forEach(name => {
+                const playerElement = document.createElement('div');
+                playerElement.className = 'bg-gray-100 rounded-lg p-3 flex flex-col items-center';
+                
+                // 随机玩家头像颜色
+                const colors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                playerElement.innerHTML = `
+                    <div class="w-12 h-12 bg-${randomColor}-100 rounded-full flex items-center justify-center text-${randomColor}-500 mb-2">
+                        <i class="fa fa-user text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium">${name}</span>
+                `;
+                
+                playersContainer.appendChild(playerElement);
+            });
+        }
+        
+        // 生成玩家成就
+        function generatePlayerAchievements() {
+            const achievementsContainer = document.getElementById('player-achievements');
+            achievementsContainer.innerHTML = '';
+            
+            const achievements = [
+                { player: 'BuilderKing', title: '建筑大师', description: '建造了一座超过500个方块的城堡', date: '2小时前' },
+                { player: 'MinerPro', title: '钻石猎人', description: '一次性开采了10颗钻石', date: '5小时前' },
+                { player: 'RedstoneWizard', title: '红石工程师', description: '建造了一个全自动农场', date: '昨天' },
+                { player: 'ExplorerX', title: '探险家', description: '发现了所有生物群系', date: '昨天' },
+                { player: 'PvPChampion', title: 'PvP冠军', description: '在竞技场中获得10连胜', date: '2天前' },
+                { player: 'CrafterMaster', title: ' crafting大师', description: '合成了所有工具和武器', date: '3天前' }
+            ];
+            
+            achievements.forEach(achievement => {
+                const achievementElement = document.createElement('div');
+                achievementElement.className = 'bg-gray-50 rounded-lg p-4 border border-gray-100';
+                
+                achievementElement.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 mr-3">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">${achievement.player}</h4>
+                                <p class="text-sm text-gray-500">${achievement.date}</p>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium">
+                            新成就
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h5 class="font-semibold">${achievement.title}</h5>
+                        <p class="text-sm text-gray-600">${achievement.description}</p>
+                    </div>
+                `;
+                
+                achievementsContainer.appendChild(achievementElement);
+            });
+        }
+        
+        // 初始化玩家列表和成就
+        generateOnlinePlayers();
+        generatePlayerAchievements();
+        
+        // 初始化玩家活跃度图表
+        function initPlayerActivityChart() {
+            const ctx = document.getElementById('playerActivityChart').getContext('2d');
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    datasets: [{
+                        label: '平均在线人数',
+                        data: [32, 28, 35, 42, 55, 68, 72],
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }, {
+                        label: '峰值在线人数',
+                        data: [45, 40, 50, 60, 75, 90, 95],
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '玩家数量'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 初始化图表
+        window.addEventListener('load', initPlayerActivityChart);
+        
+        // AI助手功能
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // 快速问题按钮
+        document.querySelectorAll('.quick-question').forEach(button => {
+            button.addEventListener('click', function() {
+                const question = this.textContent;
+                document.getElementById('chat-input').value = question;
+                sendMessage();
+            });
+        });
+        
+        function sendMessage() {
+            const chatInput = document.getElementById('chat-input');
+            const message = chatInput.value.trim();
+            
+            if (message === '') return;
+            
+            // 添加用户消息
+            addMessage(message, 'user');
+            
+            // 清空输入框
+            chatInput.value = '';
+            
+            // 显示正在输入状态
+            showTypingIndicator();
+            
+            // 模拟AI回复延迟
+            setTimeout(() => {
+                // 移除正在输入状态
+                removeTypingIndicator();
+                
+                // 添加AI回复
+                const response = getAIResponse(message);
+                addMessage(response, 'ai');
+                
+                // 滚动到底部
+                scrollToBottom();
+            }, 1000);
+        }
+        
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'flex items-start mb-4';
+            
+            if (sender === 'user') {
+                messageElement.innerHTML = `
+                    <div class="flex-1"></div>
+                    <div class="bg-primary text-white rounded-lg p-3 max-w-[80%]">
+                        <p>${message}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+                        <i class="fa fa-user text-sm"></i>
+                    </div>
+                `;
+            } else {
+                messageElement.innerHTML = `
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white mr-2 flex-shrink-0">
+                        <i class="fa fa-robot text-sm"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+        
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chat-messages');
+            const typingElement = document.createElement('div');
+            typingElement.id = 'typing-indicator';
+            typingElement.className = 'flex items-start mb-4';
+            
+            typingElement.innerHTML = `
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white mr-2 flex-shrink-0">
+                    <i class="fa fa-robot text-sm"></i>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-3">
+                    <div class="flex space-x-1">
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingElement);
+            scrollToBottom();
+        }
+        
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function getAIResponse(message) {
+            // 简单的关键词匹配回复
+            message = message.toLowerCase();
+            
+            if (message.includes('加入') || message.includes('地址') || message.includes('怎么进')) {
+                return '要加入JERC服务器，请在Minecraft中选择"多人游戏"，点击"添加服务器"，输入服务器地址：9666.fun:13757，然后点击"完成"并加入即可。';
+            } else if (message.includes('特色') || message.includes('玩法')) {
+                return 'JERC服务器提供原汁原味的生存体验，还有经济系统、自定义任务、领地保护、成就系统和定期社区活动等特色玩法，让你的Minecraft体验更加丰富有趣。';
+            } else if (message.includes('规则') || message.includes('规定')) {
+                return 'JERC服务器的主要规则包括：禁止作弊、禁止破坏他人财产、禁止辱骂和骚扰、合理使用资源、禁止广告等。违反规则可能导致警告、临时封禁或永久封禁。';
+            } else if (message.includes('管理员') || message.includes('op')) {
+                return '如果你需要联系管理员，可以通过Discord服务器或发送邮件至admin@jerc-server.com。请详细描述你的问题，我们会尽快回复。';
+            } else if (message.includes('商店') || message.includes('购买')) {
+                return 'JERC服务器有一个玩家驱动的经济系统，你可以通过游戏内的商店与其他玩家交易物品。此外，我们还有一个服务器商城，你可以通过/donate命令查看详情。';
+            } else if (message.includes('领地') || message.includes('保护')) {
+                return 'JERC服务器提供强大的领地保护系统。你可以使用/res create [领地名称]命令创建领地，使用/res add [玩家名]命令添加成员，使用/res set [权限] true/false设置权限。';
+            } else if (message.includes('插件') || message.includes('mod')) {
+                return 'JERC服务器使用PaperMC作为服务端，安装了一些必要的插件来增强游戏体验，但不需要玩家安装任何客户端mod。只需使用纯净的Minecraft 1.20.1版本即可加入。';
+            } else {
+                return '感谢你的提问！这是一个很好的问题。如果你有关于服务器的具体问题，我很乐意为你解答。你也可以访问我们的社区论坛获取更多信息。';
+            }
+        }
+    </script>
+</body>
+</html>
