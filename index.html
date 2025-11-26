@@ -272,7 +272,7 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">服务器版本</span>
-                            <span class="font-medium">1.20.1</span>
+                            <span class="font-medium">1.21.124</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">服务器类型</span>
@@ -284,7 +284,7 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">服务器软件</span>
-                            <span class="font-medium">PaperMC</span>
+                            <span class="font-medium">LL</span>
                         </div>
                     </div>
                 </div>
@@ -332,7 +332,7 @@
                         <div>
                             <div class="flex justify-between text-sm text-gray-500 mb-1">
                                 <span>CPU 使用率</span>
-                                <span id="cpu-usage">32%</span>
+                                <span id="cpu-usage"></span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2.5">
                                 <div class="bg-yellow-500 h-2.5 rounded-full" id="cpu-bar" style="width: 32%"></div>
@@ -615,8 +615,8 @@
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">AI智能助手</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">有任何问题？我们的AI助手随时为你解答</p>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">无法进入游戏？在这里输入id申诉</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">格式ID+联系方式</p>
             </div>
             
             <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
@@ -625,7 +625,7 @@
                         <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
                             <i class="fa fa-robot text-primary"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">JERC智能助手</h3>
+                        <h3 class="text-xl font-semibold">JERC智能窗口</h3>
                     </div>
                 </div>
                 
@@ -636,7 +636,7 @@
                                 <i class="fa fa-robot text-sm"></i>
                             </div>
                             <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                                <p>你好！我是JERC服务器的AI助手，有什么可以帮助你的吗？</p>
+                                <p>请输入..</p>
                             </div>
                         </div>
                     </div>
@@ -737,7 +737,7 @@
                     <ul class="space-y-3">
                         <li><a href="forum.html" class="text-gray-400 hover:text-white transition-all-300">社区论坛</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">Discord</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">YouTube频道</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">QQ频道</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">服务器地图</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition-all-300">玩家商店</a></li>
                     </ul>
@@ -752,11 +752,11 @@
                         </li>
                         <li class="flex items-center">
                             <i class="fa fa-map-marker text-gray-400 mr-3"></i>
-                            <span class="text-gray-400">北京市朝阳区</span>
+                            <span class="text-gray-400">黑龙江哈尔滨市道里区</span>
                         </li>
                         <li class="flex items-center">
                             <i class="fa fa-clock-o text-gray-400 mr-3"></i>
-                            <span class="text-gray-400">24/7 在线</span>
+                            <span class="text-gray-400">在线</span>
                         </li>
                     </ul>
                 </div>
@@ -1139,7 +1139,7 @@
             } else if (message.includes('领地') || message.includes('保护')) {
                 return 'JERC服务器提供强大的领地保护系统。你可以使用/res create [领地名称]命令创建领地，使用/res add [玩家名]命令添加成员，使用/res set [权限] true/false设置权限。';
             } else if (message.includes('插件') || message.includes('mod')) {
-                return 'JERC服务器使用PaperMC作为服务端，安装了一些必要的插件来增强游戏体验，但不需要玩家安装任何客户端mod。只需使用纯净的Minecraft 1.20.1版本即可加入。';
+                return 'JERC服务器使用LL作为服务端，安装了一些必要的插件来增强游戏体验，但不需要玩家安装任何客户端mod。只需使用纯净的Minecraft BEDROCK1.21.124版本即可加入。';
             } else {
                 return '感谢你的提问！这是一个很好的问题。如果你有关于服务器的具体问题，我很乐意为你解答。你也可以访问我们的社区论坛获取更多信息。';
             }
