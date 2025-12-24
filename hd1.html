@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JERC生存服务器 - 跨年狂欢活动</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Minecraft", "微软雅黑", sans-serif;
+        }
+
+        @font-face {
+            font-family: "Minecraft";
+            src: url("https://cdn.jsdelivr.net/npm/minecraft-font@1.0.0/minecraft.woff2") format("woff2");
+        }
+
+        body {
+            background: linear-gradient(180deg, #1a1a2e, #16213e, #0f3460);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .pixel-border {
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 4px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
+            border-radius: 2px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            animation: fadeDown 1s ease-in-out;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #f0f0f0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            animation: fadeUp 1s ease-in-out 0.3s both;
+        }
+
+        .countdown-item {
+            background: #1a1a2e;
+            padding: 20px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffd700;
+            border-radius: 4px;
+        }
+
+        .countdown-item span {
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+
+        .countdown-item p {
+            font-size: 0.8rem;
+            color: #f0f0f0;
+            margin-top: 5px;
+        }
+
+        .section {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+            animation: fadeUp 1s ease-in-out calc(0.5s + var(--delay, 0s)) both;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffd700' d='M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm-1-9a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0V5zm0 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0z'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
+
+        .section p, .section li {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #f0f0f0;
+            margin-bottom: 10px;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .section li::before {
+            content: "■";
+            color: #ffd700;
+            margin-right: 10px;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .event-card {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .event-card h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .reward-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .reward-item {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .reward-item img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            border-top: 2px solid #ffd700;
+            animation: fadeUp 1s ease-in-out 1s both;
+        }
+
+        footer p {
+            font-size: 1rem;
+            color: #f0f0f0;
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            .countdown-item {
+                width: 80px;
+                height: 80px;
+            }
+            .countdown-item span {
+                font-size: 2rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JERC生存服务器 · 跨年狂欢</h1>
+            <p>告别旧岁，共筑新篇！参与跨年活动，赢取限定奖励，一起在方块世界迎接新年！</p>
+        </header>
+
+        <div class="countdown">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                <p>天</p>
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                <p>时</p>
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                <p>分</p>
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                <p>秒</p>
+            </div>
+        </div>
+
+        <section class="section" style="--delay: 0.2s">
+            <h2>活动时间</h2>
+            <p>报名时间：2025年12月28日 - 2025年12月31日 23:00</p>
+            <p>活动时间：2025年12月31日 20:00 - 2026年1月1日 02:00</p>
+            <p>领奖时间：2026年1月1日 - 2026年1月3日 23:59</p>
+        </section>
+
+        <section class="section" style="--delay: 0.4s">
+            <h2>活动玩法</h2>
+            <div class="event-grid">
+                <div class="event-card">
+                    <h3>❶ 跨年建筑大赛</h3>
+                    <p>主题：「新年祈愿」</p>
+                    <p>玩家可单人或组队（最多3人）参与，在指定区域建造新年主题建筑，由管理员和玩家投票评选获奖作品。</p>
+                </div>
+                <div class="event-card">
+                    <h3>❷ 幸运方块竞速</h3>
+                    <p>在专用赛道开启幸运方块，躲避陷阱、收集道具，最先到达终点的玩家获胜，过程充满未知与刺激！</p>
+                </div>
+                <div class="event-card">
+                    <h3>❸ 守岁答题挑战</h3>
+                    <p>23:00开始，每10分钟一轮答题，题目涵盖MC知识、服务器历史、新年常识，累计答对最多的玩家获奖。</p>
+                </div>
+                <div class="event-card">
+                    <h3>❹ 跨年夜集体烟花</h3>
+                    <p>00:00整，服务器全服发放限定烟花，玩家可在主城或自己的领地燃放，共同迎接新年第一秒！</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="--delay: 0.6s">
+            <h2>丰厚奖励</h2>
+            <div class="reward-list">
+                <div class="reward-item">
+                    <img src="https://cdn.jsdelivr.net/npm/minecraft-icons@1.0.0/icons/diamond.png" alt="钻石">
+                    <p>建筑大赛一等奖：钻石块x50 + 限定新年称号</p>
+                </div>
+                <div class="reward-item">
+                    <img src="https://cdn.jsdelivr.net/npm/minecraft-icons@1.0.0/icons/nether_star.png" alt="下界之星">
+                    <p>幸运方块竞速冠军：下界之星x3 + 飞行权限7天</p>
+                </div>
+                <div class="reward-item">
+                    <img src="https://cdn.jsdelivr.net/npm/minecraft-icons@1.0.0/icons/enchanted_book.png" alt="附魔书">
+                    <p>答题挑战冠军：随机顶级附魔书x2</p>
+                </div>
+                <div class="reward-item">
+                    <img src="https://cdn.jsdelivr.net/npm/minecraft-icons@1.0.0/icons/firework_rocket.png" alt="烟花">
+                    <p>参与奖：新年限定烟花x20 + 绿宝石x10</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="--delay: 0.8s">
+            <h2>活动规则</h2>
+            <ul>
+                <li>参与活动需遵守服务器群规，禁止作弊、开挂、恶意破坏他人作品。</li>
+                <li>建筑大赛需在指定区域建造，禁止使用模组或外挂辅助建造。</li>
+                <li>幸运方块竞速禁止携带自定义道具，仅可使用赛道内幸运方块获得的物品。</li>
+                <li>答题挑战禁止百度搜索，一经发现取消获奖资格。</li>
+                <li>跨年夜烟花由服务器统一发放，禁止私自使用高频烟花导致服务器卡顿。</li>
+                <li>奖励需在规定时间内联系管理员领取，逾期视为自动放弃。</li>
+            </ul>
+        </section>
+
+        <section class="section" style="--delay: 1s">
+            <h2>注意事项</h2>
+            <p>1. 活动期间服务器将开启备份，若出现卡顿请及时联系管理员。</p>
+            <p>2. 组队参与的玩家需提前在群内报备队伍信息。</p>
+            <p>3. 活动最终解释权归JERC生存服务器管理团队所有。</p>
+            <p>4. 如有疑问可在服务器群内@管理员咨询。</p>
+        </section>
+
+        <footer>
+            <p>JERC生存服务器管理团队 © 2025-2026</p>
+            <p>祝各位玩家新年快乐，游戏愉快！</p>
+        </footer>
+    </div>
+
+    <script>
+        // 倒计时功能
+        function updateCountdown() {
+            const targetDate = new Date("2025-12-31T20:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById("days").textContent = "00";
+                document
