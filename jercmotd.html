@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JERC 服务器状态查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* 服务器查询容器 - 核心美化样式 */
+        .server-status-container {
+            width: 100%;
+            max-width: 700px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .server-status-container:hover {
+            transform: translateY(-2px);
+        }
+
+        /* iframe 容器，解决高度自适应问题 */
+        .iframe-wrapper {
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 比例，可根据实际调整 */
+            height: 0;
+        }
+
+        .iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 加载提示 */
+        .loading-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #718096;
+            font-size: 1rem;
+            z-index: -1;
+        }
+
+        .footer-note {
+            margin-top: 1rem;
+            color: #718096;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="page-title">JERC 服务器状态查询</h1>
+
+    <div class="server-status-container">
+        <div class="loading-hint">正在加载服务器状态...</div>
+        <div class="iframe-wrapper">
+            <!-- 你提供的 iframe 代码 -->
+            <iframe id="mc-status-9666-fun-13757" 
+                    src="http://motd.minebbs.com/iframe?ip=9666.fun&port=13757&stype=be&dark=true">
+            </iframe>
+        </div>
+    </div>
+
+    <p class="footer-note">数据来源：minebbs.com</p>
+</body>
+</html>
