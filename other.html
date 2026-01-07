@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>其他功能 - JERC 生存服务器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        .title span {
+            color: #00ffff;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .function-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 25px 15px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .function-button:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .back-button {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 12px 30px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .footer {
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="title">其他<span>功能</span></div>
+
+    <div class="button-container">
+        <a href="zs.html" class="function-button">赞助服务器</a>
+        <a href="wypf.html" class="function-button">网易皮肤代上传</a>
+    </div>
+
+    <a href="index.html" class="back-button">返回首页</a>
+
+    <div class="footer">
+        © 2024-2026 JERC 生存服务器
+    </div>
+</body>
+</html>
