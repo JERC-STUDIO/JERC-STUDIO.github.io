@@ -25,11 +25,12 @@
             margin-bottom: 1.5rem;
             text-align: center;
         }
-        .server-status-img {
+        .server-status-container {
             max-width: 100%;
             width: 700px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
         .footer {
             margin-top: 1rem;
@@ -41,12 +42,10 @@
 </head>
 <body>
     <h1 class="title">JERC 服务器状态查询</h1>
-    <!-- 你指定的服务器状态图片 -->
-    <img 
-        src="http://motd.minebbs.com/api/status_img?ip=9666.fun&port=13757&stype=auto&theme=dark_tech" 
-        alt="JERC服务器状态" 
-        class="server-status-img"
-    >
+    <!-- 替换后的服务器状态iframe -->
+    <div class="server-status-container">
+        <iframe id="mc-status-9666-fun-13757" frameborder="0" width="700" style="max-width:100%;" scrolling="no" src="https://motd.minebbs.com/iframe?ip=9666.fun&port=13757&style=auto&dark=false"></iframe>
+    </div>
     <p class="footer">数据来源：minebbs.com</p>
 </body>
 </html>
