@@ -20,32 +20,29 @@
             padding: 2rem 1rem;
         }
         .title {
-            font-size: clamp(1.5rem, 3vw, 1.8rem); /* 响应式字体 */
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
             color: #2d3748;
             margin-bottom: 1.5rem;
             text-align: center;
             font-weight: 600;
         }
+        /* 移除显示框样式，仅保留布局容器 */
         .server-status-container {
             max-width: 100%;
             width: 100%;
-            max-width: 700px; /* 最大宽度限制 */
-            border-radius: 12px; /* 圆角优化 */
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-            overflow: hidden;
-            background: #fff; /* 增加白色背景，提升对比度 */
+            max-width: 700px;
         }
-        /* 关键：iframe响应式适配 */
+        /* iframe响应式适配不变 */
         .server-status-container iframe {
-            width: 100% !important; /* 宽度自适应父容器 */
-            height: auto !important; /* 高度自动调整 */
-            aspect-ratio: 500 / 195; /* 保持原有宽高比（500:195） */
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 500 / 195;
             display: block;
         }
         .footer {
             margin-top: 1rem;
             color: #718096;
-            font-size: clamp(0.8rem, 1.5vw, 0.9rem); /* 响应式字体 */
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
             text-align: center;
             padding: 0 1rem;
         }
@@ -53,10 +50,9 @@
 </head>
 <body>
     <h1 class="title">JERC 服务器状态查询</h1>
-    <!-- 保持原有API地址不变 -->
     <div class="server-status-container">
         <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" src="//motdbe.blackbe.work/iframe.html?ip=9666.fun&port=13757&dark=false"></iframe>
     </div>
-    <p class="footer">数据来源：minebbs.com</p>
+    <p class="footer">数据来源：mcpe</p>
 </body>
 </html>
