@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>更新页面</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+  body{
+    background:#ffffff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+  }
+  .box{
+    width:100%;
+    max-width:380px;
+    padding:30px;
+    border-radius:16px;
+    background:#ffffff;
+    text-align:center;
+  }
+  .title{
+    font-size:24px;
+    color:#16a34a;
+    margin-bottom:12px;
+  }
+  .desc{
+    font-size:14px;
+    color:#4b5565;
+    margin-bottom:22px;
+    line-height:1.5;
+  }
+  .btn{
+    width:100%;
+    padding:12px;
+    background:#22c55e;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    margin-bottom:12px;
+    cursor:pointer;
+  }
+  .btn-back{
+    background:#e5e7eb;
+    color:#4b5565;
+  }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="title">发现新版本</div>
+  <div class="desc">
+    当前版本已过时，请下载最新版本以获得更好体验。
+  </div>
+
+  <button class="btn" onclick="window.open('http://xxx','_blank')">
+    立即下载更新
+  </button>
+
+  <button class="btn btn-back" onclick="window.location.href='http://xxx'">
+    返回启动页
+  </button>
+</div>
+</body>
+</html>
+
