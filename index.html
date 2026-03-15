@@ -13,13 +13,13 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background-color: #f8fff9;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: #333;
             padding: 20px;
         }
 
@@ -27,12 +27,12 @@
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 40px;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
             text-align: center;
+            color: #00a05a;
         }
 
         .logo span {
-            color: #00ffff;
+            color: #008b4e;
         }
 
         .button-container {
@@ -44,28 +44,30 @@
         }
 
         .server-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
+            background: white;
+            border: 2px solid #00a05a;
+            border-radius: 14px;
             padding: 25px 15px;
             text-align: center;
             text-decoration: none;
-            color: #fff;
+            color: #00a05a;
             font-size: 1.1rem;
+            font-weight: 500;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 160, 90, 0.08);
+            cursor: pointer;
         }
 
         .server-button:hover {
-            background: rgba(0, 255, 255, 0.2);
+            background: #f0f9f4;
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 160, 90, 0.15);
         }
 
         .footer {
             margin-top: 60px;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: #888;
             text-align: center;
         }
 
@@ -81,18 +83,25 @@
     </style>
 </head>
 <body>
-    <div class="logo">JERC <span>生存服务器</span></div>
 
-    <div class="button-container">
-        <a href="https://jerc.flarum.cloud/" class="server-button">服务器论坛</a>
-        <a href="jercmotd.html" class="server-button">服务器状态查询</a>
-        <a href="jercpic.html" class="server-button">服务器图集</a>
-        <a href="https://jerc.flarum.cloud/events" class="server-button">服务器活动日历</a>
-        <a href="other.html" class="server-button">其他功能</a>
-    </div>
+<div class="logo">JERC <span>生存服务器</span></div>
 
-    <div class="footer">
-        © 2024-2026 JERC 生存服务器
-    </div>
+<div class="button-container">
+    <a href="https://jerc.flarum.cloud/" class="server-button" onclick="load(this)">服务器论坛</a>
+    <a href="jercmotd.html" class="server-button" onclick="load(this)">服务器状态查询</a>
+    <a href="https://jerc.flarum.cloud/events" class="server-button" onclick="load(this)">服务器活动日历</a>
+</div>
+
+<div class="footer">
+    © 2024-2026 JERC 生存服务器
+</div>
+
+<script>
+function load(btn) {
+    btn.innerText = "加载中...";
+    btn.style.pointerEvents = "none";
+}
+</script>
+
 </body>
 </html>
