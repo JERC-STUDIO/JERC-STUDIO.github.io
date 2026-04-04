@@ -1,118 +1,718 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>好友移民纪念卡</title>
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-body{
-    background:linear-gradient(135deg,#f7f9ff 0%,#e6f0ff 100%);
-    min-height:100vh;
-    font-family:system-ui,-apple-system,Roboto,"Microsoft YaHei",sans-serif;
-    padding:20px;
-}
-.container{
-    max-width:420px;
-    margin:40px auto;
-    background:#fff;
-    border-radius:24px;
-    padding:40px 32px;
-    box-shadow:0 15px 35px rgba(50,80,180,0.1);
-}
-.title{
-    text-align:center;
-    font-size:28px;
-    color:#2b6dff;
-    margin-bottom:8px;
-}
-.subtitle{
-    text-align:center;
-    color:#666;
-    font-size:15px;
-    margin-bottom:36px;
-}
-.item{
-    margin-bottom:20px;
-}
-label{
-    display:block;
-    font-size:15px;
-    color:#333;
-    margin-bottom:8px;
-}
-input,textarea{
-    width:100%;
-    padding:14px 16px;
-    border:1px solid #e6efff;
-    border-radius:14px;
-    font-size:15px;
-    background:#fafbfc;
-    outline:none;
-}
-textarea{
-    height:100px;
-    resize:none;
-}
-button{
-    width:100%;
-    padding:16px;
-    background:linear-gradient(90deg,#4d8cff,#2b6dff);
-    color:#fff;
-    border:none;
-    border-radius:16px;
-    font-size:16px;
-    font-weight:500;
-    margin-top:12px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的友谊 · 永久纪念</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d6cdf;
+            --primary-light: #4e8cff;
+            --bg: linear-gradient(135deg, #f0f4ff 0%, #e0f0ff 100%);
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --shadow: 0 20px 60px rgba(31, 38, 135, 0.15);
+        }
+
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 🌟 星空流星背景（全新升级） */
+        .starry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.8));
+            transform: rotate(-45deg);
+            animation: meteor 6s infinite linear;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes meteor {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(-500px) translateY(500px) rotate(-45deg); opacity: 0; }
+        }
+
+        /* 密码锁页面 */
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lock-card {
+            max-width: 380px;
+            width: 90%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 50px 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            text-align: center;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: popIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+        }
+
+        @keyframes popIn {
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lock-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .lock-title {
+            font-size: 26px;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .lock-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+        .lock-input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e0e8ff;
+            border-radius: 18px;
+            font-size: 17px;
+            background: #fafbff;
+            outline: none;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .lock-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(45, 108, 223, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .lock-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(45, 108, 223, 0.25);
+        }
+
+        .lock-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(45, 108, 223, 0.3);
+        }
+
+        .lock-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-tip {
+            color: #ff4d4f;
+            font-size: 13px;
+            margin-top: 15px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .error-tip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .lock-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+        }
+
+        /* 主卡片页面 */
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-card {
+            max-width: 440px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 45px 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 🎀 卡片顶部渐变装饰条 */
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary), #7c4dff);
+        }
+
+        .main-card.show {
+            opacity: 1;
+            transform: translateY(0);
+            animation: cardFloat 6s infinite ease-in-out;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* 定制名字标题样式（加发光效果） */
+        .card-title {
+            font-size: 34px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(45, 108, 223, 0.3);
+            animation: titleGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(45, 108, 223, 0.3); }
+            50% { text-shadow: 0 0 30px rgba(45, 108, 223, 0.5); }
+        }
+
+        .title-divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            margin: 0 auto 15px;
+            border-radius: 3px;
+        }
+
+        .days-counter {
+            font-size: 20px;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .days-number {
+            font-size: 36px;
+            color: var(--primary);
+            font-weight: 700;
+            display: inline-block;
+            animation: numberPop 0.8s ease;
+        }
+
+        @keyframes numberPop {
+            0% { transform: scale(1.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .card-subtitle {
+            color: #777;
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* 表单元素（完全不变！） */
+        .form-item {
+            margin-bottom: 22px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid #e0e8ff;
+            border-radius: 16px;
+            font-size: 15px;
+            background: #fafbff;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(45, 108, 223, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            height: 110px;
+            resize: none;
+            line-height: 1.6;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 600;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(45, 108, 223, 0.25);
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+
+        .submit-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(45, 108, 223, 0.3);
+        }
+
+        /* 📝 底部专属签名 */
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+            opacity: 0;
+            transition: all 0.5s ease 1.5s;
+        }
+
+        .main-card.show .signature {
+            opacity: 1;
+        }
+
+        /* 完成提示弹窗（加烟花效果） */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .success-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: firework 1s ease-out forwards;
+        }
+
+        @keyframes firework {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .modal-text {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(45, 108, 223, 0.25);
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="title">致远行的你</div>
-    <div class="subtitle">愿此去繁花似锦，我们永不失联</div>
+    <!-- 🌟 星空流星背景 -->
+    <div class="starry-bg" id="starryBg"></div>
 
-    <div class="item">
-        <label>你的名字</label>
-        <input type="text" placeholder="请输入">
+    <!-- 密码锁页面 -->
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-card">
+            <div class="lock-icon">🔒</div>
+            <h2 class="lock-title">专属纪念卡</h2>
+            <p class="lock-subtitle">输入密码，解锁我们的回忆</p>
+            <input type="password" class="lock-input" id="pwdInput" placeholder="请输入密码">
+            <button class="lock-btn" id="unlockBtn">解锁</button>
+            <p class="error-tip" id="errorTip">密码错误，请重新输入</p>
+        </div>
     </div>
 
-    <div class="item">
-        <label>你的生日</label>
-        <input type="text" placeholder="例如：2010.02.18">
+    <!-- 主纪念卡页面 -->
+    <div class="main-container">
+        <div class="main-card" id="mainCard">
+            <div class="card-header">
+                <h1 class="card-title" id="cardTitle">xxx 和 xxx</h1>
+                <div class="title-divider"></div>
+                <div class="days-counter">
+                    我们已经分开 <span class="days-number" id="daysCount">0</span> 天
+                </div>
+                <p class="card-subtitle">愿此去繁花似锦，我们永不失联</p>
+            </div>
+
+            <!-- 👇 输入框完全不变，保留所有默认内容 👇 -->
+            <div class="form-item">
+                <label>你的名字</label>
+                <input type="text" id="nameInput" value="张泽辰">
+            </div>
+            <div class="form-item">
+                <label>你的生日</label>
+                <input type="text" id="birthdayInput" value="2013.8.6">
+            </div>
+            <div class="form-item">
+                <label>前往的国家/城市</label>
+                <input type="text" id="countryInput" value="新西兰">
+            </div>
+            <div class="form-item">
+                <label>未来的愿望</label>
+                <textarea id="wishInput">可以当插画家，或者随便当一个什么</textarea>
+            </div>
+            <div class="form-item">
+                <label>想对我说的话</label>
+                <textarea id="messageInput">小妹妹，你挺牛逼卡斯，你要敢忘了我，你死定了</textarea>
+            </div>
+            <div class="form-item">
+                <label>微信号</label>
+                <input type="text" id="wechatInput" value="Zhangzechen86">
+            </div>
+            <div class="form-item">
+                <label>联系方式</label>
+                <input type="text" id="contactInput" value="打我电话:13104050806或15663608484">
+            </div>
+            <!-- 👆 输入框完全不变 👆 -->
+
+            <button class="submit-btn" id="finishBtn">保存纪念</button>
+
+            <!-- 📝 底部专属签名 -->
+            <div class="signature">
+                —— 致我们永不褪色的友谊
+            </div>
+        </div>
     </div>
 
-    <div class="item">
-        <label>即将前往的国家/城市</label>
-        <input type="text" placeholder="请输入">
+    <!-- 完成提示弹窗 -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-icon">✨</div>
+            <h3 class="modal-title">纪念完成</h3>
+            <p class="modal-text">
+                这份回忆已经永远保存<br>
+                无论相隔多远，友谊永不褪色
+            </p>
+            <button class="modal-btn" id="closeModal">我知道了</button>
+        </div>
     </div>
 
-    <div class="item">
-        <label>未来的愿望</label>
-        <textarea placeholder="写下你的心愿"></textarea>
-    </div>
+    <script>
+        // ====================== 配置区（你只需要改这里）======================
+        const CONFIG = {
+            // 👤 你们的名字（会显示在标题最上方）
+            yourName: "赵晟楠",
+            friendName: "张泽辰",
+            // 🔐 你的密码
+            password: "xmmntnbklsa",
+            // 📅 分开的日期（格式：年,月-1,日） 比如2026年4月4日就是 2026,3,4
+            separateDate: new Date(2026, 3, 5),
+            // ✨ 星星和流星数量
+            starCount: 100,
+            meteorCount: 5
+        };
+        // ===================================================================
 
-    <div class="item">
-        <label>想对我说的话</label>
-        <textarea placeholder="留下我们的回忆"></textarea>
-    </div>
+        // 初始化星空背景
+        function initStarryBg() {
+            const container = document.getElementById("starryBg");
+            
+            // 创建星星
+            for (let i = 0; i < CONFIG.starCount; i++) {
+                const star = document.createElement("div");
+                star.className = "star";
+                star.style.left = Math.random() * 100 + "%";
+                star.style.top = Math.random() * 100 + "%";
+                star.style.animationDelay = Math.random() * 3 + "s";
+                star.style.animationDuration = 2 + Math.random() * 2 + "s";
+                container.appendChild(star);
+            }
 
-    <div class="item">
-        <label>微信号</label>
-        <input type="text" placeholder="记得常联系">
-    </div>
+            // 创建流星
+            for (let i = 0; i < CONFIG.meteorCount; i++) {
+                const meteor = document.createElement("div");
+                meteor.className = "meteor";
+                meteor.style.left = Math.random() * 100 + 50 + "%";
+                meteor.style.top = Math.random() * 50 + "%";
+                meteor.style.animationDelay = Math.random() * 6 + "s";
+                meteor.style.animationDuration = 4 + Math.random() * 4 + "s";
+                container.appendChild(meteor);
+            }
+        }
 
-    <div class="item">
-        <label>海外联系方式（WhatsApp/Ins）</label>
-        <input type="text" placeholder="方便以后找到你">
-    </div>
+        // 初始化标题
+        function initTitle() {
+            document.getElementById("cardTitle").textContent = `${CONFIG.yourName} 和 ${CONFIG.friendName}`;
+        }
 
-    <button onclick="alert('纪念完成！截图保存这份美好吧 ✨')">完成纪念</button>
-</div>
+        // 计算分开天数
+        function calculateDays() {
+            const now = new Date();
+            const diffTime = Math.abs(now - CONFIG.separateDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById("daysCount").textContent = diffDays;
+        }
+
+        // 解锁逻辑
+        function initLock() {
+            const lockScreen = document.getElementById("lockScreen");
+            const mainCard = document.getElementById("mainCard");
+            const pwdInput = document.getElementById("pwdInput");
+            const unlockBtn = document.getElementById("unlockBtn");
+            const errorTip = document.getElementById("errorTip");
+
+            unlockBtn.addEventListener("click", () => {
+                if (pwdInput.value.trim() === CONFIG.password) {
+                    lockScreen.classList.add("hidden");
+                    setTimeout(() => {
+                        mainCard.classList.add("show");
+                        // 表单元素逐个加载动效
+                        const formItems = document.querySelectorAll(".form-item");
+                        formItems.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add("show");
+                            }, 100 * index);
+                        });
+                        // 按钮最后加载
+                        setTimeout(() => {
+                            document.querySelector(".submit-btn").classList.add("show");
+                        }, 100 * formItems.length);
+                    }, 800);
+                } else {
+                    errorTip.classList.add("show");
+                    pwdInput.value = "";
+                    pwdInput.focus();
+                    setTimeout(() => {
+                        errorTip.classList.remove("show");
+                    }, 2000);
+                }
+            });
+
+            // 回车解锁
+            pwdInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") unlockBtn.click();
+            });
+        }
+
+        // 完成按钮逻辑（加烟花效果）
+        function initFinishBtn() {
+            const finishBtn = document.getElementById("finishBtn");
+            const successModal = document.getElementById("successModal");
+            const closeModal = document.getElementById("closeModal");
+            const modalContent = document.getElementById("modalContent");
+
+            finishBtn.addEventListener("click", () => {
+                successModal.classList.add("show");
+                // 弹出烟花效果
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const firework = document.createElement("div");
+                        firework.className = "firework";
+                        firework.style.left = Math.random() * 100 + "%";
+                        firework.style.top = Math.random() * 100 + "%";
+                        firework.style.background = `hsl(${Math.random() * 60 + 200}, 100%, 60%)`;
+                        modalContent.appendChild(firework);
+                        setTimeout(() => firework.remove(), 1000);
+                    }, i * 100);
+                }
+            });
+
+            closeModal.addEventListener("click", () => {
+                successModal.classList.remove("show");
+            });
+
+            // 点击空白处关闭弹窗
+            successModal.addEventListener("click", (e) => {
+                if (e.target === successModal) {
+                    successModal.classList.remove("show");
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener("load", () => {
+            initStarryBg();
+            initTitle();
+            calculateDays();
+            initLock();
+            initFinishBtn();
+            // 每天自动更新天数
+            setInterval(calculateDays, 60000);
+        });
+    </script>
 </body>
 </html>
 
+    
