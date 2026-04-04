@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>好友移民纪念卡</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    background:linear-gradient(135deg,#f7f9ff 0%,#e6f0ff 100%);
+    min-height:100vh;
+    font-family:system-ui,-apple-system,Roboto,"Microsoft YaHei",sans-serif;
+    padding:20px;
+}
+.container{
+    max-width:420px;
+    margin:40px auto;
+    background:#fff;
+    border-radius:24px;
+    padding:40px 32px;
+    box-shadow:0 15px 35px rgba(50,80,180,0.1);
+}
+.title{
+    text-align:center;
+    font-size:28px;
+    color:#2b6dff;
+    margin-bottom:8px;
+}
+.subtitle{
+    text-align:center;
+    color:#666;
+    font-size:15px;
+    margin-bottom:36px;
+}
+.item{
+    margin-bottom:20px;
+}
+label{
+    display:block;
+    font-size:15px;
+    color:#333;
+    margin-bottom:8px;
+}
+input,textarea{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #e6efff;
+    border-radius:14px;
+    font-size:15px;
+    background:#fafbfc;
+    outline:none;
+}
+textarea{
+    height:100px;
+    resize:none;
+}
+button{
+    width:100%;
+    padding:16px;
+    background:linear-gradient(90deg,#4d8cff,#2b6dff);
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:500;
+    margin-top:12px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="title">致远行的你</div>
+    <div class="subtitle">愿此去繁花似锦，我们永不失联</div>
+
+    <div class="item">
+        <label>你的名字</label>
+        <input type="text" placeholder="请输入">
+    </div>
+
+    <div class="item">
+        <label>你的生日</label>
+        <input type="text" placeholder="例如：2010.02.18">
+    </div>
+
+    <div class="item">
+        <label>即将前往的国家/城市</label>
+        <input type="text" placeholder="请输入">
+    </div>
+
+    <div class="item">
+        <label>未来的愿望</label>
+        <textarea placeholder="写下你的心愿"></textarea>
+    </div>
+
+    <div class="item">
+        <label>想对我说的话</label>
+        <textarea placeholder="留下我们的回忆"></textarea>
+    </div>
+
+    <div class="item">
+        <label>微信号</label>
+        <input type="text" placeholder="记得常联系">
+    </div>
+
+    <div class="item">
+        <label>海外联系方式（WhatsApp/Ins）</label>
+        <input type="text" placeholder="方便以后找到你">
+    </div>
+
+    <button onclick="alert('纪念完成！截图保存这份美好吧 ✨')">完成纪念</button>
+</div>
+</body>
+</html>
+
