@@ -1,0 +1,20 @@
+[
+  {
+    "playerName": "Jerry",
+    "reason": "使用作弊客户端",
+    "banTime": "2026-04-01T00:00:00.000Z",
+    "operator": "Admin"
+  },
+  {
+    "playerName": "TestUser",
+    "reason": "恶意破坏他人建筑",
+    "banTime": "2026-03-28T00:00:00.000Z",
+    "operator": "Moderator"
+  },
+  {
+    "playerName": "JERRY",
+    "reason": "辱骂其他玩家",
+    "banTime": "2026-03-25T00:00:00.000Z",
+    "operator": "Admin"
+  }
+]
